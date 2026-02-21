@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>火力計算機</title>
+<title>変異倍率計算機</title>
 
 <style>
 body {
@@ -47,7 +47,7 @@ label {
 <h1>火力計算機</h1>
 
 <p>元値 (M)</p>
-<input type="number" id="baseValue" placeholder="例: 6.7">
+<input type="number" id="baseValue" placeholder="例: 50">
 
 <h3>レアリティ</h3>
 <select id="rarity">
@@ -75,8 +75,8 @@ label {
 <label><input type="checkbox" value="2"> フローズン</label>
 <label><input type="checkbox" value="2"> ニューイヤー</label>
 <label><input type="checkbox" value="3"> グリッチ</label>
-<label><input type="checkbox" value="3"> ウェーブ</label>
-<label><input type="checkbox" value="3.5"> キューピット</label>
+<label><input type="checkbox" value="3"> ウェーブ</label>  
+<label><input type="checkbox" value="2.5"> キューピット</label>
 <label><input type="checkbox" value="4"> パンプキン</label>
 <label><input type="checkbox" value="5"> スキビティ</label>
 
@@ -88,30 +88,28 @@ label {
 <script>
 
 function formatValue(value) {
-
   if (value >= 1000) {
-    let raw = Math.floor((value / 1000) * 10) / 10;
+    let bValue = value / 1000;
+    bValue = Math.floor(bValue * 10) / 10; // 1桁切り捨て
 
-    if (raw % 1 === 0) {
-      return raw.toFixed(0) + " B/s";
+    if (bValue % 1 === 0) {
+      return bValue.toFixed(0) + "B/s";
     } else {
-      return raw.toFixed(1) + " B/s";
+      return bValue.toFixed(1) + "B/s";
     }
-  }
 
-  else {
-    let raw = Math.floor(value * 10) / 10;
+  } else {
+    let mValue = Math.floor(value * 10) / 10; // 1桁切り捨て
 
-    if (raw % 1 === 0) {
-      return raw.toFixed(0) + " M/s";
+    if (mValue % 1 === 0) {
+      return mValue.toFixed(0) + "M/s";
     } else {
-      return raw.toFixed(1) + " M/s";
+      return mValue.toFixed(1) + "M/s";
     }
   }
 }
 
 function calculate() {
-
   const base = parseFloat(document.getElementById("baseValue").value);
   const rarity = parseFloat(document.getElementById("rarity").value);
   const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -127,9 +125,7 @@ function calculate() {
     mutationTotal += parseFloat(box.value);
   });
 
-  // 🔥 ゲーム一致式（-1補正）
-  const totalMultiplier = rarity + mutationTotal - 1;
-
+  const totalMultiplier = rarity + mutationTotal;
   const finalValue = base * totalMultiplier;
 
   document.getElementById("result").innerHTML =
