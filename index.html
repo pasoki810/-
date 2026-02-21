@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>変異倍率計算機</title>
+<title>火力計算機</title>
 
 <style>
 body {
@@ -47,26 +47,26 @@ label {
 <h1>火力計算機</h1>
 
 <p>元値 (M)</p>
-<input type="number" id="baseValue" placeholder="例: 50">
+<input type="number" id="baseValue" placeholder="例: 6.7">
 
 <h3>レアリティ</h3>
 <select id="rarity">
-  <option value="0">ノーマル</option>
-  <option value="0.25">ゴールド</option>
-  <option value="0.5">ダイヤモンド</option>
-  <option value="2">ギャラクシー</option>
-  <option value="4">ゾンビ</option>
-  <option value="5">ドリーミー</option>
-  <option value="6">アイス＆ファイア</option>
-  <option value="7">カーニバル</option>
-  <option value="8">アクア</option>
-  <option value="8.5">ネオン</option>
-  <option value="9">ハロウィン</option>
-  <option value="9">レインボー</option>
-  <option value="9.5">チョコレート</option>
-  <option value="10">ダークネス</option>
-  <option value="10">トキシック</option>
-  <option value="11">クリスマス</option>
+  <option value="1">ノーマル</option>
+  <option value="1.25">ゴールド</option>
+  <option value="1.5">ダイヤモンド</option>
+  <option value="3">ギャラクシー</option>
+  <option value="5">ゾンビ</option>
+  <option value="6">ドリーミー</option>
+  <option value="7">アイス＆ファイア</option>
+  <option value="8">カーニバル</option>
+  <option value="9">アクア</option>
+  <option value="9.5">ネオン</option>
+  <option value="10">ハロウィン</option>
+  <option value="10">レインボー</option>
+  <option value="10.5">チョコレート</option>
+  <option value="11">ダークネス</option>
+  <option value="11">トキシック</option>
+  <option value="12">クリスマス</option>
 </select>
 
 <h3>変異（複数選択可）</h3>
@@ -89,7 +89,6 @@ label {
 
 function formatValue(value) {
 
-  // --- B表示 ---
   if (value >= 1000) {
     let raw = Math.floor((value / 1000) * 10) / 10;
 
@@ -100,7 +99,6 @@ function formatValue(value) {
     }
   }
 
-  // --- M表示 ---
   else {
     let raw = Math.floor(value * 10) / 10;
 
@@ -113,6 +111,7 @@ function formatValue(value) {
 }
 
 function calculate() {
+
   const base = parseFloat(document.getElementById("baseValue").value);
   const rarity = parseFloat(document.getElementById("rarity").value);
   const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -128,7 +127,9 @@ function calculate() {
     mutationTotal += parseFloat(box.value);
   });
 
-  const totalMultiplier = 1 + rarity + mutationTotal;
+  // 🔥 ゲーム一致式（-1補正）
+  const totalMultiplier = rarity + mutationTotal - 1;
+
   const finalValue = base * totalMultiplier;
 
   document.getElementById("result").innerHTML =
