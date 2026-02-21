@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>変異計算サイト</title>
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
+  margin-top: 40px;
+}
+input {
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: orange;
+  border: none;
+  font-weight: bold;
+}
+.container {
+  margin-top: 20px;
+}
+.result {
+  font-size: 24px;
+  margin-top: 20px;
+  color: cyan;
+  font-weight: bold;
+}
+label {
+  display: block;
+  margin: 5px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<h1>🔥 変異倍率計算機 🔥</h1>
+
+<p>元値を入力</p>
+<input type="number" id="baseValue" placeholder="例: 50">
+
+<div class="container">
+  <h3>変異を選択（複数可）</h3>
+
+  <label><input type="checkbox" value="1.5"> ライトニング +1.5</label>
+  <label><input type="checkbox" value="2"> フローズン +2</label>
+  <label><input type="checkbox" value="2"> ニューイヤー +2</label>
+  <label><input type="checkbox" value="3"> グリッチ +3</label>
+  <label><input type="checkbox" value="4"> パンプキン +4</label>
+  <label><input type="checkbox" value="5"> スキビティ +5</label>
+
+</div>
+
+<button onclick="calculate()">計算する</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function calculate() {
+  const base = parseFloat(document.getElementById("baseValue").value);
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+  if (isNaN(base)) {
+    document.getElementById("result").textContent = "元値を入力してください";
+    return;
+  }
+
+  let totalBonus = 0;
+
+  checkboxes.forEach(box => {
+    totalBonus += parseFloat(box.value);
+  });
+
+  const finalMultiplier = 1 + totalBonus;
+  const finalValue = base * finalMultiplier;
+
+  document.getElementById("result").innerHTML =
+    "合計倍率: ×" + finalMultiplier +
+    "<br>最終値: " + finalValue.toLocaleString();
+}
+</script>
+
+</body>
+</html>
