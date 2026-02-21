@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>変異計算サイト</title>
+<title>変異倍率計算機</title>
 <style>
 body {
   font-family: Arial;
@@ -24,8 +24,9 @@ button {
   border: none;
   font-weight: bold;
 }
-.container {
-  margin-top: 20px;
+label {
+  display: block;
+  margin: 5px;
 }
 .result {
   font-size: 24px;
@@ -33,39 +34,58 @@ button {
   color: cyan;
   font-weight: bold;
 }
-label {
-  display: block;
-  margin: 5px;
-  cursor: pointer;
+select {
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px;
 }
 </style>
 </head>
 <body>
 
-<h1>🔥 変異倍率計算機 🔥</h1>
+<h1>変異倍率計算機 </h1>
 
-<p>元値を入力</p>
+<p>元値 (M)</p>
 <input type="number" id="baseValue" placeholder="例: 50">
 
-<div class="container">
-  <h3>変異を選択（複数可）</h3>
+<h3>レアリティ</h3>
+<select id="rarity">
+  <option value="0">ノーマル +0</option>
+  <option value="0.25">ゴールド +0.25</option>
+  <option value="0.5">ダイヤモンド +0.5</option>
+  <option value="2">ギャラクシー +2</option>
+  <option value="4">ゾンビ +4</option>
+  <option value="5">ドリーミー +5</option>
+  <option value="6">アイス＆ファイア +6</option>
+  <option value="7">カーニバル +7</option>
+  <option value="8">アクア +8</option>
+  <option value="8.5">ネオン +8.5</option>
+  <option value="9">ハロウィン +9</option>
+  <option value="9">レインボー +9</option>
+  <option value="9.5">チョコレート +9.5</option>
+  <option value="10">ダークネス +10</option>
+  <option value="10">トキシック +10</option>
+  <option value="11">クリスマス +11</option>
+</select>
 
-  <label><input type="checkbox" value="1.5"> ライトニング +1.5</label>
-  <label><input type="checkbox" value="2"> フローズン +2</label>
-  <label><input type="checkbox" value="2"> ニューイヤー +2</label>
-  <label><input type="checkbox" value="3"> グリッチ +3</label>
-  <label><input type="checkbox" value="4"> パンプキン +4</label>
-  <label><input type="checkbox" value="5"> スキビティ +5</label>
+<h3>変異（複数選択可）</h3>
 
-</div>
+<label><input type="checkbox" value="1.5"> ライトニング +1.5</label>
+<label><input type="checkbox" value="2"> フローズン +2</label>
+<label><input type="checkbox" value="2"> ニューイヤー +2</label>
+<label><input type="checkbox" value="3"> グリッチ +3</label>
+<label><input type="checkbox" value="4"> パンプキン +4</label>
+<label><input type="checkbox" value="5"> スキビティ +5</label>
 
-<button onclick="calculate()">計算する</button>
+<br>
+<button onclick="calculate()">計算</button>
 
 <div class="result" id="result"></div>
 
 <script>
 function calculate() {
   const base = parseFloat(document.getElementById("baseValue").value);
+  const rarity = parseFloat(document.getElementById("rarity").value);
   const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
   if (isNaN(base)) {
@@ -73,18 +93,18 @@ function calculate() {
     return;
   }
 
-  let totalBonus = 0;
+  let mutationTotal = 0;
 
   checkboxes.forEach(box => {
-    totalBonus += parseFloat(box.value);
+    mutationTotal += parseFloat(box.value);
   });
 
-  const finalMultiplier = 1 + totalBonus;
-  const finalValue = base * finalMultiplier;
+  const totalMultiplier = 1 + rarity + mutationTotal;
+  const finalValue = base * totalMultiplier;
 
   document.getElementById("result").innerHTML =
-    "合計倍率: ×" + finalMultiplier +
-    "<br>最終値: " + finalValue.toLocaleString();
+    "合計倍率: ×" + totalMultiplier.toFixed(2) +
+    "<br>最終値: " + finalValue.toFixed(2) + " M/s";
 }
 </script>
 
