@@ -88,6 +88,8 @@ label {
 <script>
 
 function formatValue(value) {
+
+  // --- B表示 ---
   if (value >= 1000) {
     let raw = Math.floor((value / 1000) * 10) / 10;
 
@@ -96,9 +98,17 @@ function formatValue(value) {
     } else {
       return raw.toFixed(1) + " B/s";
     }
+  }
 
-  } else {
-    return Math.floor(value) + " M/s";
+  // --- M表示 ---
+  else {
+    let raw = Math.floor(value * 10) / 10;
+
+    if (raw % 1 === 0) {
+      return raw.toFixed(0) + " M/s";
+    } else {
+      return raw.toFixed(1) + " M/s";
+    }
   }
 }
 
