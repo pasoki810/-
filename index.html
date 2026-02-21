@@ -75,7 +75,7 @@ label {
 <label><input type="checkbox" value="2"> フローズン</label>
 <label><input type="checkbox" value="2"> ニューイヤー</label>
 <label><input type="checkbox" value="3"> グリッチ</label>
-<label><input type="checkbox" value="3"> ウェーブ</label>  
+<label><input type="checkbox" value="3"> ウェーブ</label>
 <label><input type="checkbox" value="3.5"> キューピット</label>
 <label><input type="checkbox" value="4"> パンプキン</label>
 <label><input type="checkbox" value="5"> スキビティ</label>
@@ -89,8 +89,14 @@ label {
 
 function formatValue(value) {
   if (value >= 1000) {
-    let bValue = Math.floor(value / 1000);
-    return bValue + " B/s";
+    let raw = Math.floor((value / 1000) * 10) / 10;
+
+    if (raw % 1 === 0) {
+      return raw.toFixed(0) + " B/s";
+    } else {
+      return raw.toFixed(1) + " B/s";
+    }
+
   } else {
     return Math.floor(value) + " M/s";
   }
@@ -123,7 +129,3 @@ function calculate() {
 
 </body>
 </html>
-
-
-
-
