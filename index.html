@@ -135,13 +135,15 @@ function loadData(){
     }
     if(matched) continue;
 
-    // 値の位置を探す
-    let valueIndex = i + 1;
-    while(valueIndex < tokens.length && isNaN(parseFloat(tokens[valueIndex])) && !tokens[valueIndex].includes("K") && !tokens[valueIndex].includes("M")){
+    // 値の位置を探す（数字＋K/Mの形式）
+    let valueIndex = i;
+    while(valueIndex < tokens.length && !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)){
       valueIndex++;
     }
 
-    // 名前は i〜valueIndex-1
+    if(valueIndex >= tokens.length) break;
+
+    // 名前は i 〜 valueIndex-1
     let name = tokens.slice(i, valueIndex).join(" ");
     let value = parseValue(tokens[valueIndex]);
 
@@ -152,6 +154,7 @@ function loadData(){
 
   filterCharacters();
 }
+
 
 
 
