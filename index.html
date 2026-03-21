@@ -12,14 +12,19 @@ body {
   text-align: center;
   margin-top: 40px;
 }
+
 textarea {
   width: 90%;
-  height: 150px;
+  height: 200px;
+  font-family: monospace;
+  white-space: pre;
 }
+
 select, input, button {
   padding: 10px;
   margin: 10px;
 }
+
 .result {
   font-size: 28px;
   color: cyan;
@@ -31,8 +36,51 @@ select, input, button {
 
 <h1>火力計算機</h1>
 
-<textarea id="dataInput" readonly>
-	Common	Fishini Bossini		1
+<textarea id="dataInput" readonly></textarea>
+<br>
+<button onclick="loadData()">読み込み</button>
+
+<br><br>
+
+<select id="characterSelect" onchange="setCharacter()">
+  <option value="">キャラ選択</option>
+</select>
+
+<br>
+<input type="number" id="baseValue" placeholder="元値">
+
+<select id="rarity"></select>
+
+<h3>変異</h3>
+<label><input type="checkbox" value="1.5"> 雷</label>
+<label><input type="checkbox" value="2"> 氷</label>
+<label><input type="checkbox" value="2.5"> キューピット</label>
+<label><input type="checkbox" value="4"> パンプキン</label>
+<label><input type="checkbox" value="5"> スキビティ</label>
+
+<br><br>
+<button onclick="calculate()">計算</button>
+
+<div class="result" id="result"></div>
+
+<script>
+
+const rarityMap = {
+  "Common":1,
+  "Rare":2,
+  "Epic":3,
+  "Legendary":4,
+  "Mythic":5,
+  "Brainrot":6,
+  "Secret":7,
+  "Goat":8
+};
+
+let characters=[];
+
+// 🔥 データ（ここに貼る）
+document.getElementById("dataInput").value = `Common
+Common	Fishini Bossini		1
 	Lirili Larilla		3
 	Tim Cheese		5
 	Fluriflura		7
@@ -252,123 +300,69 @@ Secret	Los Tralaleritos		200K
 	Tiramisubmarini		90M
 	Garbagzilla		100M
 	Cannone Maledettone		115M
-Goat	Skibidi Toilet		350M</textarea>
-<br>
-<button onclick="loadData()">読み込み</button>
+Goat	Skibidi Toilet		350M
 
-<br><br>
-
-<select id="characterSelect" onchange="setCharacter()">
-  <option>キャラ選択</option>
-</select>
-
-<br>
-<input type="number" id="baseValue" placeholder="元値">
-
-<select id="rarity"></select>
-
-<h3>変異</h3>
-<label><input type="checkbox" value="1.5"> 雷</label>
-<label><input type="checkbox" value="2"> 氷</label>
-<label><input type="checkbox" value="2.5"> キューピット</label>
-<label><input type="checkbox" value="4"> パンプキン</label>
-<label><input type="checkbox" value="5"> スキビティ</label>
-
-<br><br>
-<button onclick="calculate()">計算</button>
-
-<div class="result" id="result"></div>
-
-<script>
-
-const rarityMap = {
-  "Common":1,
-  "Rare":2,
-  "Epic":3,
-  "Legendary":4,
-  "Mythic":5,
-  "Brainrot":6,
-  "Secret":7,
-  "Goat":8
-};
-
-let characters=[];
-
-// 🔥 データ読み込み
+// 🔥 読み込み
 function loadData(){
-  const text=document.getElementById("dataInput").value;
-  const lines=text.split("\n");
+  const text = document.getElementById("dataInput").value;
+  const lines = text.split("\n");
 
-  characters=[];
-  let currentRarity="Common";
+  characters = [];
+  let currentRarity = "Common";
 
   lines.forEach(line=>{
-    line=line.trim();
+    line = line.trim();
     if(!line) return;
 
-    // レア判定
-    for(let key in rarityMap){
-      if(line.startsWith(key)){
-        currentRarity=key;
-        return;
-      }
+    if(rarityMap[line]){
+      currentRarity = line;
+      return;
     }
 
-    let parts=line.split(/\s+/);
+    let parts = line.split(" ");
+    let value = parseFloat(parts.pop());
+    let name = parts.join(" ");
 
-    if(parts.length>=2){
-      let name=parts.slice(0, parts.length-2).join(" ");
-      let value=parts[parts.length-1];
-
-      let num=convert(value);
-
-      characters.push({
-        name:name,
-        base:num,
-        rarity:currentRarity
-      });
-    }
+    characters.push({
+      name: name,
+      base: value,
+      rarity: currentRarity
+    });
   });
 
   render();
 }
 
-// 🔥 単位変換
-function convert(v){
-  if(v.includes("K")) return parseFloat(v)*1000;
-  if(v.includes("M")) return parseFloat(v)*1000000;
-  if(v.includes("B")) return parseFloat(v)*1000000000;
-  return parseFloat(v);
-}
-
 // 🔥 セレクト生成
 function render(){
-  const select=document.getElementById("characterSelect");
-  select.innerHTML="<option>キャラ選択</option>";
+  const select = document.getElementById("characterSelect");
+  select.innerHTML = '<option value="">キャラ選択</option>';
 
   characters.forEach(c=>{
-    let op=document.createElement("option");
-    op.value=c.name;
-    op.textContent=c.name;
+    let op = document.createElement("option");
+    op.value = c.name;
+    op.textContent = c.name;
     select.appendChild(op);
   });
 }
 
-// 🔥 選択
+// 🔥 選択時（自動入力）
 function setCharacter(){
-  let c=characters.find(x=>x.name===characterSelect.value);
-  if(!c)return;
+  let name = document.getElementById("characterSelect").value;
 
-  baseValue.value=c.base;
-  rarity.value=rarityMap[c.rarity];
+  let c = characters.find(x => x.name === name);
+  if(!c) return;
+
+  document.getElementById("baseValue").value = c.base;
+  document.getElementById("rarity").value = rarityMap[c.rarity];
 }
 
-// 🔥 レアリティ生成
-const raritySelect=document.getElementById("rarity");
+// 🔥 レア生成
+const raritySelect = document.getElementById("rarity");
 Object.entries(rarityMap).forEach(([k,v])=>{
-  let op=document.createElement("option");
-  op.value=v;
-  op.textContent=k;
+  let op = document.createElement("option");
+  op.value = v;
+  op.textContent = k;
   raritySelect.appendChild(op);
 });
 
@@ -382,15 +376,16 @@ function format(v){
 
 // 🔥 計算
 function calculate(){
-  let base=parseFloat(baseValue.value);
-  let r=parseFloat(rarity.value);
-  let m=0;
+  let base = parseFloat(baseValue.value);
+  let r = parseFloat(rarity.value);
+  let m = 0;
 
   document.querySelectorAll("input[type=checkbox]:checked")
     .forEach(x=>m+=parseFloat(x.value));
 
-  let result=base*(r+m);
-  resultText.textContent="最終値: "+format(result);
+  let result = base * (r + m);
+  document.getElementById("result").textContent =
+    "最終値: " + format(result);
 }
 
 </script>
