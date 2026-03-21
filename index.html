@@ -139,16 +139,19 @@ if(matched) continue;
     if(matched) continue;
 
     // 値の位置を探す（数字＋K/Mの形式）
-    let valueIndex = i;
-    while(valueIndex < tokens.length && !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)){
-      valueIndex++;
-    }
+   // 値トークンを探す
+let valueIndex = i;
+while(valueIndex < tokens.length && 
+      !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)) {
+  valueIndex++;
+}
 
-    if(valueIndex >= tokens.length) break;
+// 名前は i 〜 valueIndex-1
+let name = tokens.slice(i, valueIndex).join(" ");
 
-    // 名前は i 〜 valueIndex-1
-    let name = tokens.slice(i, valueIndex).join(" ");
-    let value = parseValue(tokens[valueIndex]);
+// 値は valueIndex のトークン
+let value = parseValue(tokens[valueIndex]);
+
 
     characters.push({name, base: value, rarity: currentRarity});
 
