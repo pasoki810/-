@@ -22,6 +22,17 @@ select {
   width: 320px;
 }
 
+.mutations {
+  display: inline-block;
+  text-align: left;
+  margin-top: 10px;
+}
+
+.mutations label {
+  display: block; /* ←縦並び */
+  margin: 5px 0;
+}
+
 .result {
   font-size: 28px;
   color: cyan;
@@ -33,7 +44,7 @@ select {
 
 <h1>火力計算機</h1>
 
-<!-- 🔍 検索 -->
+<!-- 検索 -->
 <input type="text" id="search" placeholder="キャラ検索" oninput="filterCharacters()">
 
 <br>
@@ -45,22 +56,21 @@ select {
 
 <br>
 
-<!-- 元値 -->
-<input type="number" id="baseValue" placeholder="元値">
-
 <!-- レア -->
 <select id="rarity"></select>
 
 <h3>変異</h3>
-<label><input type="checkbox" value="1.5"> ライトニング</label>
-<label><input type="checkbox" value="2"> フローズン</label>
-<label><input type="checkbox" value="2"> ニューイヤー</label>
-<label><input type="checkbox" value="3"> グリッチ</label>
-<label><input type="checkbox" value="3"> ウェーブ</label>
-<label><input type="checkbox" value="3.5"> キューピット</label>
-<label><input type="checkbox" value="4"> パンプキン</label>
-<label><input type="checkbox" value="5"> スキビティ</label>
 
+<div class="mutations">
+  <label><input type="checkbox" value="1.5"> ライトニング</label>
+  <label><input type="checkbox" value="2"> フローズン</label>
+  <label><input type="checkbox" value="2"> ニューイヤー</label>
+  <label><input type="checkbox" value="3"> グリッチ</label>
+  <label><input type="checkbox" value="3"> ウェーブ</label>
+  <label><input type="checkbox" value="3.5"> キューピット</label>
+  <label><input type="checkbox" value="4"> パンプキン</label>
+  <label><input type="checkbox" value="5"> スキビティ</label>
+</div>
 
 <br><br>
 <button onclick="calculate()">計算</button>
@@ -69,7 +79,6 @@ select {
 
 <script>
 
-// 🔥 レア倍率
 const rarityMap = {
   "Common":1,
   "Rare":2,
@@ -81,43 +90,26 @@ const rarityMap = {
   "Goat":8
 };
 
-// 🔥 キャラデータ（ここに全部入れる）
+let currentBase = 0;
+
+// 🔥 キャラ（例：ここに増やす）
 const characters = [
   {name:"Fishini Bossini", base:1, rarity:"Common"},
   {name:"Lirili Larilla", base:3, rarity:"Common"},
   {name:"Tim Cheese", base:5, rarity:"Common"},
-  {name:"Fluriflura", base:7, rarity:"Common"},
-  {name:"Penguino Cocosino", base:9, rarity:"Common"},
-  {name:"Svinina Bombardino", base:10, rarity:"Common"},
-  {name:"Pipi Kiwi", base:13, rarity:"Common"},
-  {name:"Pipi Avocado", base:14, rarity:"Common"},
-
   {name:"Trippi Troppi", base:15, rarity:"Rare"},
-  {name:"Tung Tung Tung Sahur", base:25, rarity:"Rare"},
-  {name:"Gangster Footera", base:30, rarity:"Rare"},
-
   {name:"Cappuccino Assassino", base:75, rarity:"Epic"},
-  {name:"Brr Brr Patapim", base:100, rarity:"Epic"},
-
   {name:"Burbalona Loliloli", base:200, rarity:"Legendary"},
-  {name:"Chimpanzini Bananini", base:300, rarity:"Legendary"},
-
   {name:"Frigo Camelo", base:1200, rarity:"Mythic"},
-  {name:"Sigma Boy", base:7000, rarity:"Mythic"},
-
   {name:"Cocofanto Elefanto", base:10000, rarity:"Brainrot"},
-  {name:"Tralalero Tralala", base:50000, rarity:"Brainrot"},
-
   {name:"Los Tralaleritos", base:200000, rarity:"Secret"},
-  {name:"Fourteen", base:1400000, rarity:"Secret"},
-
   {name:"Skibidi Toilet", base:350000000, rarity:"Goat"}
 ];
 
-// 🔥 初期表示
+// 初期表示
 renderCharacters(characters);
 
-// 🔥 レア選択
+// レア生成
 const raritySelect = document.getElementById("rarity");
 Object.entries(rarityMap).forEach(([k,v])=>{
   let op = document.createElement("option");
@@ -126,7 +118,7 @@ Object.entries(rarityMap).forEach(([k,v])=>{
   raritySelect.appendChild(op);
 });
 
-// 🔥 キャラ表示
+// キャラ表示
 function renderCharacters(list){
   const select = document.getElementById("characterSelect");
   select.innerHTML = '<option value="">キャラ選択</option>';
@@ -139,7 +131,7 @@ function renderCharacters(list){
   });
 }
 
-// 🔥 検索
+// 検索
 function filterCharacters(){
   let word = document.getElementById("search").value.toLowerCase();
 
@@ -150,18 +142,18 @@ function filterCharacters(){
   renderCharacters(filtered);
 }
 
-// 🔥 選択 → 自動入力
+// 選択 → 元値保存
 function setCharacter(){
   let name = document.getElementById("characterSelect").value;
 
   let c = characters.find(x => x.name === name);
   if(!c) return;
 
-  document.getElementById("baseValue").value = c.base;
+  currentBase = c.base;
   document.getElementById("rarity").value = rarityMap[c.rarity];
 }
 
-// 🔥 表示フォーマット
+// 表示
 function format(v){
   if(v>=1e9) return (Math.floor(v/1e8)/10)+"B/s";
   if(v>=1e6) return (Math.floor(v/1e5)/10)+"M/s";
@@ -169,16 +161,16 @@ function format(v){
   return v.toFixed(1)+"/s";
 }
 
-// 🔥 計算
+// 計算
 function calculate(){
-  let base = parseFloat(baseValue.value);
   let r = parseFloat(rarity.value);
   let m = 0;
 
   document.querySelectorAll("input[type=checkbox]:checked")
     .forEach(x=>m+=parseFloat(x.value));
 
-  let result = base * (r + m);
+  let result = currentBase * (r + m);
+
   document.getElementById("result").textContent =
     "最終値: " + format(result);
 }
