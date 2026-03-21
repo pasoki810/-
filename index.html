@@ -123,7 +123,7 @@ function loadData(){
   rawData.forEach(line => {
     if (!line.trim()) return;
 
-    let parts = line.split("\t").filter(x => x.trim() !== "");
+    let parts = line.trim().split(" ");
 
     if (
       ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0])
