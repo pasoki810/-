@@ -123,35 +123,32 @@ function loadData(){
 
   while(i < tokens.length){
     // レアリティ判定（長い順で）
-  let j = i;
-while(j < tokens.length && tokens[j].match(/^\d+(\.\d+)?(K|M)?$/)) j++;
-let matched = false;
-for(const r of rarityList){
-  const rTokens = r.split(" ");
-  if(tokens.slice(j, j + rTokens.length).join(" ") === r){
-    currentRarity = r;
-    i = j + rTokens.length;
-    matched = true;
-    break;
-  }
-}
-if(matched) continue;
+    let matched = false;
+    for(const r of rarityList){
+      const rTokens = r.split(" ");
+      if(tokens.slice(i, i + rTokens.length).join(" ") === r){
+        currentRarity = r;
+        i += rTokens.length;
+        matched = true;
+        break;
+      }
+    }
     if(matched) continue;
 
-    // 値の位置を探す（数字＋K/Mの形式）
-   // 値トークンを探す
-let valueIndex = i;
-while(valueIndex < tokens.length && 
-      !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)) {
-  valueIndex++;
-}
+    // 値トークンは「次の数字 or K/M付き数字」
+    let valueIndex = i;
+    while(valueIndex < tokens.length && 
+          !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)) {
+      valueIndex++;
+    }
 
-// 名前は i 〜 valueIndex-1
-let name = tokens.slice(i, valueIndex).join(" ");
+    if(valueIndex >= tokens.length) break; // 安全対策
 
-// 値は valueIndex のトークン
-let value = parseValue(tokens[valueIndex]);
+    // 名前は i 〜 valueIndex-1
+    let name = tokens.slice(i, valueIndex).join(" ");
 
+    // 値は valueIndex のトークン
+    let value = parseValue(tokens[valueIndex]);
 
     characters.push({name, base: value, rarity: currentRarity});
 
