@@ -114,41 +114,45 @@ function parseValue(v){
 }
 
 // 読み込み
-function loadData(){
-  const rawData = data.split("\n");
+function loadData() {
   characters = [];
+  let rarityList = ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"];
+
+  // データ全体をスペースで分ける
+  let tokens = data.trim().split(/\s+/);
+
   let currentRarity = "Common";
-
-  rawData.forEach(line => {
-    if (!line.trim()) return;
-
-    let parts = line.trim().split(" ");
-
-    // レアリティ判定（2単語レアリティも対応）
-    const possibleRarity2 = parts.slice(0,2).join(" ");
-    if (
-      ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0]) ||
-      ["Brainrot God"].includes(possibleRarity2)
-    ) {
-      currentRarity = ["Brainrot God"].includes(possibleRarity2) ? possibleRarity2 : parts[0];
-
-      // レアリティ行にキャラと値が続く場合
-      if(parts.length > 2){
-        const value = parseValue(parts[parts.length-1]);        // 最後の値を取得
-        const name = parts.slice(1, parts.length-1).join(" "); // 残りを名前として結合
-        characters.push({name, base: value, rarity: currentRarity});
-      }
-      return;
+  for (let i = 0; i < tokens.length; i++) {
+    // レアリティ判定
+    if (rarityList.includes(tokens[i])) {
+      currentRarity = tokens[i];
+      continue;
+    }
+    // Brainrot God は2単語なので特別処理
+    if (tokens[i] === "Brainrot" && tokens[i+1] === "God") {
+      currentRarity = "Brainrot God";
+      i++;
+      continue;
     }
 
-    // 通常キャラ行
-    const value = parseValue(parts[parts.length-1]);
-    const name = parts.slice(0, parts.length-1).join(" ");
+    // 値は数字かK/M付きなので最後のトークンで判断
+    let valueToken = tokens[i+2] || tokens[i+1]; // 名前2単語まで仮
+    let value = parseValue(valueToken);
+
+    // 名前は数値以外の前の単語を結合
+    let name = tokens[i];
+    if (isNaN(parseFloat(tokens[i+1])) && !tokens[i+1].includes("K") && !tokens[i+1].includes("M")) {
+      name += " " + tokens[i+1];
+      i++;
+    }
+
     characters.push({name, base: value, rarity: currentRarity});
-  });
+    i++; // 値を飛ばす
+  }
 
   filterCharacters();
 }
+
 
 // フィルター
 function filterCharacters(){
