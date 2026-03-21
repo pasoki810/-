@@ -314,21 +314,58 @@ function parseValue(v){
 }
 
 // 読み込み
-function load(){
-  data.split("\n").forEach(line=>{
-    line = line.trim();
-    if(!line) return;
+function loadData(){
+  const rawData = document.getElementById("dataInput").value.split("\n");
 
-    let parts = line.split("\t");
+  characters = [];
+  let currentRarity = "Common";
+
+  rawData.forEach(line => {
+    if (!line.trim()) return;
+
+    let parts = line.split("\t").filter(x => x.trim() !== "");
+
+    if (
+      parts[0] === "Common" ||
+      parts[0] === "Rare" ||
+      parts[0] === "Epic" ||
+      parts[0] === "Legendary" ||
+      parts[0] === "Mythic" ||
+      parts[0] === "Brainrot God" ||
+      parts[0] === "Secret" ||
+      parts[0] === "Goat"
+    ) {
+      currentRarity = parts[0];
+
+      let name = parts[1];
+      let value = parts[2];
+
+      value = value.replace("K", "*1000").replace("M", "*1000000");
+      value = eval(value);
+
+      characters.push({
+        name: name,
+        base: value,
+        rarity: currentRarity
+      });
+
+      return;
+    }
+
+    let name = parts[0];
+    let value = parts[1];
+
+    value = value.replace("K", "*1000").replace("M", "*1000000");
+    value = eval(value);
 
     characters.push({
-      rarity: parts[0],
-      name: parts[1],
-      base: parseValue(parts[2])
+      name: name,
+      base: value,
+      rarity: currentRarity
     });
   });
 
-  filterCharacters();
+  render();
 }
 
 // フィルター
