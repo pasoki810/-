@@ -114,34 +114,34 @@ function parseValue(v){
 }
 
 // 読み込み
-function loadData() {
+function loadData(){
   characters = [];
-  const rarityList = ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"];
-
-  // データを空白で分割
-  let tokens = data.trim().split(/\s+/);
+  const rarityList = ["Brainrot God","Secret","Goat","Mythic","Legendary","Epic","Rare","Common"];
+  const tokens = data.trim().split(/\s+/);
   let currentRarity = "Common";
   let i = 0;
 
   while(i < tokens.length){
-    // レアリティチェック（Brainrot Godは2単語）
-    if(tokens[i] === "Brainrot" && tokens[i+1] === "God"){
-      currentRarity = "Brainrot God";
-      i += 2;
-      continue;
-    } else if(rarityList.includes(tokens[i])){
-      currentRarity = tokens[i];
-      i++;
-      continue;
+    // レアリティ判定（長い順で）
+    let matched = false;
+    for(const r of rarityList){
+      const rTokens = r.split(" ");
+      if(tokens.slice(i, i + rTokens.length).join(" ") === r){
+        currentRarity = r;
+        i += rTokens.length;
+        matched = true;
+        break;
+      }
     }
+    if(matched) continue;
 
-    // 値を探す（数字かK/M付き）
+    // 値の位置を探す
     let valueIndex = i + 1;
     while(valueIndex < tokens.length && isNaN(parseFloat(tokens[valueIndex])) && !tokens[valueIndex].includes("K") && !tokens[valueIndex].includes("M")){
       valueIndex++;
     }
 
-    // 名前はi〜valueIndex-1まで
+    // 名前は i〜valueIndex-1
     let name = tokens.slice(i, valueIndex).join(" ");
     let value = parseValue(tokens[valueIndex]);
 
@@ -152,6 +152,7 @@ function loadData() {
 
   filterCharacters();
 }
+
 
 
 
