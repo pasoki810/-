@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>変異倍率計算機</title>
+<title>火力計算機</title>
 
 <style>
 body {
@@ -12,32 +12,17 @@ body {
   text-align: center;
   margin-top: 40px;
 }
-
-input, select {
+textarea {
+  width: 90%;
+  height: 150px;
+}
+select, input, button {
   padding: 10px;
-  font-size: 16px;
   margin: 10px;
 }
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background: orange;
-  border: none;
-  font-weight: bold;
-}
-
-label {
-  display: block;
-  margin: 5px;
-}
-
 .result {
   font-size: 28px;
-  margin-top: 25px;
   color: cyan;
-  font-weight: bold;
 }
 </style>
 </head>
@@ -46,99 +31,369 @@ label {
 
 <h1>火力計算機</h1>
 
-<p>元値 (M)</p>
-<input type="number" id="baseValue" placeholder="例: 50">
+<h3>Common	Fishini Bossini		1	25
+	Lirili Larilla		3	250
+	Tim Cheese		5	500
+	Fluriflura		7	750
+	Penguino Cocosino		9	1K
+	Svinina Bombardino		10	1.25K
+	Pipi Kiwi		13	1.5K
+	Pipi Avocado		14	1.8K
+Rare	Trippi Troppi		15	2K
+	Tung Tung Tung Sahur		25	3K
+	Gangster Footera		30	4K
+	Boneca Ambalabu		40	5K
+	Pipi Corni		50	6K
+	Ta Ta Ta Ta Sahur		55	7.5K
+	Burballoni Watermeloni		60	8K
+	Pipi Potato		70	9K
+Epic	Cappuccino Assassino		75	10K
+	Brr Brr Patapim		100	15K
+	Trulimero Trulicina		120	20K
+	Bananita Dolphinita		150	25K
+	Los Lirilitos		200	40K
+	Salamino Pinguino		250	50K
+	Tric Trac Baraboom		275	55K
+	Los Tung TungCitos		300	60K
+	Tukanno Bananno		325	65K
+	Blueberrinni Octopussini		350	70K
+	Spijuniro Golubiro		400	75K
+	Penguini Zucchini		425	80K
+	Blueberrini Tatticini		450	85K
+	Gingobalo Gingobali		500	110K
+Legendary	Burbalona Loliloli		200	35K
+	Chimpanzini Bananini		300	50K
+	Ballerina Cappuccina		500	100K
+	Chef Crabracadabra		600	150K
+	Glorbo Fruttodillo		750	200K
+	Cacto Hipopotamo		900	225K
+	Ballerino Lololo		1K	250K
+	Lerulerulerule		1.2K	300K
+	Bambini Crostini		1.5K	350K
+	Francescoo		1.7K	400K
+	Zibra Zubra Zibralini		2K	500K
+	Bambu di Miale		2.2K	550K
+	Mangolini Parrocini		2.5K	600K
+	Lampu Lampu Sahur		2.6K	610K
+	Octopuss Coconuss		2.7K	625K
+	Leonelli Cactuselli		3K	650K
+	Elefantucci Bananucci		3.5K	700K
+	Avocadini Antilopini		4K	850K
+	Dragonini Ananasini		5K	1M
+Mythic	Frigo Camelo		1.2K	300K
+	Orangutini Ananassini		1.7K	400K
+	Bombardiro Crocodilo		2.5K	500K
+	Bombombini Gusini		5K	1M
+	Gorillo Watermellondrillo		6.25K	1.5M
+	Sigma Boy		7K	2M
+	Matteo		7.5K	2.5M
+	Los Spijuniritos		8K	3M
+	Rhino Toasterino		8.5K	3.3M
+	Ganganzelli Trulala		9K	3.5M
+	Te Te Te Sahur		9.5K	4M
+	Fireworkito Explodito		10K	4.5M
+	Strawberrelli Flamingelli		11K	6M
+	Elefantino Frigorifero		12K	6.5M
+	To To To Sahur		13K	7M
+	Elefante Cafettino		13.5K	7.2M
+	Antoniooo		14K	7.5M
+	Kudanile Astronaute		14.5K	7.8M
+	Girafa Celeste		15K	8M
+	Mr Peppermint		15.5K	8.3M
+	Perochello Lemonchello		16K	8.5M
+	Tang Tang Kelentang		17K	9M
+	Avocadorilla		18K	9.3M
+	Patapimus Maximus		19K	9.5M
+	Tirilikalika Tirilikaliko		20K	10M
+	Santoniooo		21K	11M
+	Los Matteos		22.5K	12M
+	Los Sigma Boys		23K	12.5M
+	Ti Ti Ti Sahur		25K	13M
+	Fishinis Santinis		27K	15M
+Brainrot God	Cocofanto Elefanto		10K	5M
+	Tob Tobi Tob		25K	7.5M
+	Tralalero Tralala		50K	10M
+	Odin Din Din Dun		75K	15M
+	Akulini Cactusini		80K	17M
+	Chachechicha		80K	20M
+	Espressona Signora		90K	20M
+	La Vaca Saturno Saturnita		100K	25M
+	Centralucci Nuclearucci		105K	27M
+	Ecco Cavallo Virtuoso		110K	27M
+	Los Vaquitas Saturnitas		115K	29M
+	Bulbito Bandito Traktorito		120K	30M
+	Bananananito Bandito		125K	32M
+	Chillin Chili		130K	33M
+	Trippi Troppi Troppa Trippa		130K	35M
+	Brri Bicus Dicus		135K	35M
+	Cioccolatini Pancioncioni		140K	36M
+	Brr Es Teh Patipum		145K	38M
+	Torrtuginni Dragonfrutinni		150K	40M
+	Los Bros		155K	43M
+	Bim Bim Bim Sadim		157K	44M
+	Bambini Tankini		160K	45M
+	Jiqi Jiqi Shizhon		165K	47M
+	Hotti Coccolli		167K	48M
+	Los Crocodillitos		170K	50M
+	Agarrini La Palini		175K	55M
+	Alessiooooooo		180K	60M
+	Dig Torto Dolf		185K	63M
+	Karkerkar Kurkur		190K	65M
+	Il Costruttore Di Pomodori		195K	68M
+	Piccionetta Machina		200K	70M
+	Pipoqueira Motoqueira		205K	73M
+	Il Piccione Musculone		210K	75M
+	Nooo My Present		215K	77M
+	Job Job Job Sahur		220K	80M
+	Las Sis		230K	85M
+	La Matcha Assassino		235K	87M
+	Il Mastodontico Telepiedone		240K	90M
+	Los Christmas bros		245K	93M
+	Malame Amarale		250K	100M
+	Il Bisonte Giuppitere		255K	105M
+	Linguicine Serpentine		260K	110M
+	Belugelo Beluga		270K	120M
+	Bella PanCasita		275K	130M
+	Missilpython Turbozzo		300K	150M
+	Auglurini Arbuzini		350K	200M
+Secret	Los Tralaleritos		200K	60M
+	Los Tralaleritas		200K	60M
+	Trenostruzzo Turbo 3000		300K	70M
+	Kravilino Cekicino		375K	90M
+	Los Orcaleritos		400K	100M
+	Los Couples		450K	150M
+	Las Agarrinis		470K	160M
+	Piccione Macchina		500K	125M
+	Peeling Peely		500K	225M
+	Pakrahmatmamatcita		550K	150M
+	Pakrahmatmamat		600K	300M
+	Los Job Jobsitos		700K	150M
+	Anpali Babel		800K	350M
+	Los Karkeritos		900K	325M
+	Orcalero Orcala		1M	200M
+	Frogino Assassino		1.2M	275M
+	Pickolini Malakini		1.4M	240M
+	Fourteen		1.4M	1.4B
+	Ketchuru and Musturu		1.5M	250M
+	TrenoStruzzo Turbo 4000		1.7M	140M
+	Pot Hotspotina		1.75M	550M
+	Pot Hotspot		2M	400M
+	21		2.1M	2.1B
+	Los Mobilis		2.2M	425M
+	Nooo My Hotspot		2.5M	450M
+	Elf Elf Elf		2.7M	700M
+	Frogatto Piratto		2.8M	650M
+	Garamaramadungdung		3M	500M
+	Papero Aspiratorino		3.2M	570M
+	Pirulitoita Bicicleteira		3.5M	600M
+	Chachechi Sahur		3.7M	750M
+	Il Sacro Cabrospaghetti		4M	800M
+	Tatoruman		4.2M	850M
+	Chicleteirina Bicicleteirina		4.5M	900M
+	Owlito Tactito		4.7M	930M
+	La Grande Combinacion		5M	1B
+	Rosalero		5.2M	1.1B
+	Los SantaCitos		5.5M	1.3B
+	Yess My Hotspot		5.5M	1.2B
+	Clove Clove Clove Sahur		5.7M	1.3B
+	Le Golem De Frigider		6M	1.3B
+	Cornball Sahur		6.5M	1.4B
+	67		6.7M	6.7B
+	Los Esok Sekolitos		7M	1.5B
+	Roobinha Acerolinha		7.3M	1.7B
+	Coccoblade		7.5M	1.8B
+	Chicleteira Bicicleteira		8M	2B
+	Cacasito Satelito		8.5M	4B
+	Dilly Pickle		8.7M	2.4B
+	La Christmas Combinacion		9M	2.5B
+	Pingus Kingus		9.5M	4.2B
+	Ketupat Kepat Prekupat		10M	3B
+	Lovey Lovey Bear		10.5M	4.3B
+	Coccobladina		11M	4.5B
+	Catino Timeno		11.5M	4.5B
+	Dul Dul Dul		12M	5B
+	Rang Reng Kelerang		12.5M	15.5B
+	W or L		13M	5.5B
+	Nooo My Bicicleteira		13.5M	6B
+	Cookipat		14M	6B
+	Trifoglita Bicicleta		14.5M	6.5B
+	Krr Krr Kataking		14.5M	6.5B
+	Los Garamadungcitos		15M	7B
+	Aquanaut		16M	6.5B
+	Lirili Ralilu		17M	8B
+	Lovelypat		18M	8.3B
+	McPene Dougal		19M	9B
+	La Esok Sekolah		20M	50B
+	Jisaoba Dashi		21M	9.7B
+	Pitiata Baem		22M	10B
+	Bau Wang Wolf Monarca		23M	10.5B
+	Chimpanzini Kingini		25M	10B
+	25		25M	11B
+	Yule Yule Il Reino		27M	12B
+	Strawberry Elephant		30M	13B
+	Klombo		32M	20B
+	Tictac Tictac Sahur		33M	14B
+	La Royals		33M	14B
+	Shtekerito el Bulbonito		35M	14B
+	Meccavallo		37M	14.5B
+	Spaghetti Tualetti		40M	15B
+	Santatini el Treeetini		42M	17B
+	Cabritos Brotheritos		45M	20B
+	Alligarto Alligarto		47M	22B
+	Cannelloni Dragoni		50M	100B
+	Vulturino Skeletono		56M	30B
+	Gorgonzilla		57M	24B
+	La Crazy Combinacion		60M	25B
+	Croissantini et Caffettino		65M	27B
+	Chocone Dragone		70M	70B
+	Gigalitraktos Spidorobos		75M	150B
+	Bearini Plammini Guardini		85M	35B
+	Tiramisubmarini		90M	150B
+	Garbagzilla		100M	200B
+	Cannone Maledettone		115M	230B
+Goat	Skibidi Toilet		350M	1T</h3>
+<textarea id="dataInput"></textarea>
+<br>
+<button onclick="loadData()">読み込み</button>
 
-<h3>レアリティ</h3>
-<select id="rarity">
-  <option value="1">ノーマル</option>
-  <option value="1.25">ゴールド</option>
-  <option value="1.5">ダイヤモンド</option>
-  <option value="3">ギャラクシー</option>
-  <option value="5">ゾンビ</option>
-  <option value="6">ドリーミー</option>
-  <option value="7">アイス＆ファイア</option>
-  <option value="8">カーニバル</option>
-  <option value="9">アクア</option>
-  <option value="9.5">ネオン</option>
-  <option value="10">ハロウィン</option>
-  <option value="10">レインボー</option>
-  <option value="10.5">チョコレート</option>
-  <option value="10.5">ラブリー</option>
-  <option value="11">ダークネス</option>
-  <option value="11">トキシック</option>
-  <option value="12">クリスマス</option>
-  <option value="13">ヴォイド</option>
-  <option value="13">ヘブン</option>
-  
+<br><br>
+
+<select id="characterSelect" onchange="setCharacter()">
+  <option>キャラ選択</option>
 </select>
 
-<h3>変異（複数選択可）</h3>
+<br>
+<input type="number" id="baseValue" placeholder="元値">
 
-<label><input type="checkbox" value="1.5"> ライトニング</label>
-<label><input type="checkbox" value="2"> フローズン</label>
-<label><input type="checkbox" value="2"> ニューイヤー</label>
-<label><input type="checkbox" value="3"> グリッチ</label>
-<label><input type="checkbox" value="3"> ウェーブ</label>  
+<select id="rarity"></select>
+
+<h3>変異</h3>
+<label><input type="checkbox" value="1.5"> 雷</label>
+<label><input type="checkbox" value="2"> 氷</label>
 <label><input type="checkbox" value="2.5"> キューピット</label>
 <label><input type="checkbox" value="4"> パンプキン</label>
 <label><input type="checkbox" value="5"> スキビティ</label>
 
-<br>
+<br><br>
 <button onclick="calculate()">計算</button>
 
 <div class="result" id="result"></div>
 
 <script>
 
-function formatValue(value) {
-  if (value >= 1000) {
-    let bValue = value / 1000;
-    bValue = Math.floor(bValue * 10) / 10; // 1桁切り捨て
+const rarityMap = {
+  "Common":1,
+  "Rare":2,
+  "Epic":3,
+  "Legendary":4,
+  "Mythic":5,
+  "Brainrot":6,
+  "Secret":7,
+  "Goat":8
+};
 
-    if (bValue % 1 === 0) {
-      return bValue.toFixed(0) + "B/s";
-    } else {
-      return bValue.toFixed(1) + "B/s";
+let characters=[];
+
+// 🔥 データ読み込み
+function loadData(){
+  const text=document.getElementById("dataInput").value;
+  const lines=text.split("\n");
+
+  characters=[];
+  let currentRarity="Common";
+
+  lines.forEach(line=>{
+    line=line.trim();
+    if(!line) return;
+
+    // レア判定
+    for(let key in rarityMap){
+      if(line.startsWith(key)){
+        currentRarity=key;
+        return;
+      }
     }
 
-  } else {
-    let mValue = Math.floor(value * 10) / 10; // 1桁切り捨て
+    let parts=line.split(/\s+/);
 
-    if (mValue % 1 === 0) {
-      return mValue.toFixed(0) + "M/s";
-    } else {
-      return mValue.toFixed(1) + "M/s";
+    if(parts.length>=2){
+      let name=parts.slice(0, parts.length-2).join(" ");
+      let value=parts[parts.length-1];
+
+      let num=convert(value);
+
+      characters.push({
+        name:name,
+        base:num,
+        rarity:currentRarity
+      });
     }
-  }
-}
-
-function calculate() {
-  const base = parseFloat(document.getElementById("baseValue").value);
-  const rarity = parseFloat(document.getElementById("rarity").value);
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-  if (isNaN(base)) {
-    document.getElementById("result").textContent = "元値を入力してください";
-    return;
-  }
-
-  let mutationTotal = 0;
-
-  checkboxes.forEach(box => {
-    mutationTotal += parseFloat(box.value);
   });
 
-  const totalMultiplier = rarity + mutationTotal;
-  const finalValue = base * totalMultiplier;
+  render();
+}
 
-  document.getElementById("result").innerHTML =
-    "最終値: " + formatValue(finalValue);
+// 🔥 単位変換
+function convert(v){
+  if(v.includes("K")) return parseFloat(v)*1000;
+  if(v.includes("M")) return parseFloat(v)*1000000;
+  if(v.includes("B")) return parseFloat(v)*1000000000;
+  return parseFloat(v);
+}
+
+// 🔥 セレクト生成
+function render(){
+  const select=document.getElementById("characterSelect");
+  select.innerHTML="<option>キャラ選択</option>";
+
+  characters.forEach(c=>{
+    let op=document.createElement("option");
+    op.value=c.name;
+    op.textContent=c.name;
+    select.appendChild(op);
+  });
+}
+
+// 🔥 選択
+function setCharacter(){
+  let c=characters.find(x=>x.name===characterSelect.value);
+  if(!c)return;
+
+  baseValue.value=c.base;
+  rarity.value=rarityMap[c.rarity];
+}
+
+// 🔥 レアリティ生成
+const raritySelect=document.getElementById("rarity");
+Object.entries(rarityMap).forEach(([k,v])=>{
+  let op=document.createElement("option");
+  op.value=v;
+  op.textContent=k;
+  raritySelect.appendChild(op);
+});
+
+// 🔥 表示
+function format(v){
+  if(v>=1e9) return (Math.floor(v/1e8)/10)+"B/s";
+  if(v>=1e6) return (Math.floor(v/1e5)/10)+"M/s";
+  if(v>=1e3) return (Math.floor(v/100)/10)+"K/s";
+  return v.toFixed(1)+"/s";
+}
+
+// 🔥 計算
+function calculate(){
+  let base=parseFloat(baseValue.value);
+  let r=parseFloat(rarity.value);
+  let m=0;
+
+  document.querySelectorAll("input[type=checkbox]:checked")
+    .forEach(x=>m+=parseFloat(x.value));
+
+  let result=base*(r+m);
+  resultText.textContent="最終値: "+format(result);
 }
 
 </script>
 
 </body>
 </html>
-
-
