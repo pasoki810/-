@@ -370,7 +370,7 @@ function loadData(){
 
 // フィルター
 function filterCharacters(){
-  let rarity = raritySelect.value;
+  let rarity = document.getElementById("raritySelect").value;
   let select = document.getElementById("characterSelect");
 
   select.innerHTML = '<option value="">キャラ選択</option>';
@@ -387,7 +387,7 @@ function filterCharacters(){
 
 // 選択
 function setCharacter(){
-  let name = characterSelect.value;
+  let name = document.getElementById("characterSelect").value;
   let c = characters.find(x=>x.name===name);
   if(!c) return;
 
@@ -410,7 +410,8 @@ function calculate(){
 
   let result = selectedBase * (1 + m);
 
-  resultDiv.textContent = "最終値: " + format(result);
+  document.getElementById("result").textContent = "最終値: " + format(result);
+
 }
 
 loadData();
