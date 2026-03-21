@@ -123,16 +123,19 @@ function loadData(){
 
   while(i < tokens.length){
     // レアリティ判定（長い順で）
-    let matched = false;
-    for(const r of rarityList){
-      const rTokens = r.split(" ");
-      if(tokens.slice(i, i + rTokens.length).join(" ") === r){
-        currentRarity = r;
-        i += rTokens.length;
-        matched = true;
-        break;
-      }
-    }
+  let j = i;
+while(j < tokens.length && tokens[j].match(/^\d+(\.\d+)?(K|M)?$/)) j++;
+let matched = false;
+for(const r of rarityList){
+  const rTokens = r.split(" ");
+  if(tokens.slice(j, j + rTokens.length).join(" ") === r){
+    currentRarity = r;
+    i = j + rTokens.length;
+    matched = true;
+    break;
+  }
+}
+if(matched) continue;
     if(matched) continue;
 
     // 値の位置を探す（数字＋K/Mの形式）
