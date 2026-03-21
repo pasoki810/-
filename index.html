@@ -116,7 +116,6 @@ function parseValue(v){
 // 読み込み
 function loadData(){
   const rawData = data.split("\n");
-
   characters = [];
   let currentRarity = "Common";
 
@@ -125,23 +124,26 @@ function loadData(){
 
     let parts = line.trim().split(" ");
 
+    // レアリティ判定（2単語レアリティも対応）
+    const possibleRarity2 = parts.slice(0,2).join(" ");
     if (
-      ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0])
+      ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0]) ||
+      ["Brainrot God"].includes(possibleRarity2)
     ) {
-      currentRarity = parts[0];
+      currentRarity = ["Brainrot God"].includes(possibleRarity2) ? possibleRarity2 : parts[0];
 
-      if(parts[1] && parts[2]){
-        let name = parts[1];
-        let value = parseValue(parts[2]);
+      // レアリティ行にキャラと値が続く場合
+      if(parts.length > 2){
+        const value = parseValue(parts[parts.length-1]);        // 最後の値を取得
+        const name = parts.slice(1, parts.length-1).join(" "); // 残りを名前として結合
         characters.push({name, base: value, rarity: currentRarity});
       }
-
       return;
     }
 
-    let name = parts[0];
-    let value = parseValue(parts[1]);
-
+    // 通常キャラ行
+    const value = parseValue(parts[parts.length-1]);
+    const name = parts.slice(0, parts.length-1).join(" ");
     characters.push({name, base: value, rarity: currentRarity});
   });
 
