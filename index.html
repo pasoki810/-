@@ -122,7 +122,7 @@ function loadData(){
   let i = 0;
 
   while(i < tokens.length){
-    // レアリティ判定（長い順で）
+    // レアリティ判定（長い順）
     let matched = false;
     for(const r of rarityList){
       const rTokens = r.split(" ");
@@ -135,17 +135,17 @@ function loadData(){
     }
     if(matched) continue;
 
-    // 値トークンは「次の数字 or K/M付き数字」
+    // 値トークンを探す（数字＋K/M形式のみ）
     let valueIndex = i;
-    while(valueIndex < tokens.length && 
-          !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)) {
+    while(valueIndex < tokens.length && !tokens[valueIndex].match(/^\d+(\.\d+)?(K|M)?$/)) {
       valueIndex++;
     }
 
-    if(valueIndex >= tokens.length) break; // 安全対策
+    if(valueIndex >= tokens.length) break; // データ終わり
 
     // 名前は i 〜 valueIndex-1
     let name = tokens.slice(i, valueIndex).join(" ");
+    if(!name) name = tokens[valueIndex]; // 数字だけの名前の場合
 
     // 値は valueIndex のトークン
     let value = parseValue(tokens[valueIndex]);
@@ -157,6 +157,7 @@ function loadData(){
 
   filterCharacters();
 }
+
 
 
 
