@@ -47,7 +47,7 @@ select, button {
   <option value="Epic">Epic</option>
   <option value="Legendary">Legendary</option>
   <option value="Mythic">Mythic</option>
-  <option value="Brainrot">Brainrot</option>
+  <option value="Brainrot God">Brainrot</option>
   <option value="Secret">Secret</option>
   <option value="Goat">Goat</option>
 </select>
@@ -315,7 +315,7 @@ function parseValue(v){
 
 // 読み込み
 function loadData(){
-  const rawData = document.getElementById("dataInput").value.split("\n");
+  const rawData = data.split("\n"); // ←これにする
 
   characters = [];
   let currentRarity = "Common";
@@ -413,7 +413,7 @@ function calculate(){
   resultDiv.textContent = "最終値: " + format(result);
 }
 
-load();
+loadData();
 
 </script>
 
