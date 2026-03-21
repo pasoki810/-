@@ -418,10 +418,11 @@ function calculate(){
   document.querySelectorAll("input[type=checkbox]:checked")
     .forEach(x=>m+=parseFloat(x.value));
 
-  let result = selectedBase * (1 + m);
+  let attr = parseFloat(document.getElementById("rarity").value);
+
+  let result = selectedBase * (1 + m) * attr;
 
   document.getElementById("result").textContent = "最終値: " + format(result);
-
 }
 
 loadData();
