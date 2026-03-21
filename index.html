@@ -78,7 +78,7 @@ const rarityMap = {
 
 let characters=[];
 
-// 🔥 データ（ここに貼る）
+
 document.getElementById("dataInput").value = `Common
 Common	Fishini Bossini		1
 	Lirili Larilla		3
@@ -302,7 +302,7 @@ Secret	Los Tralaleritos		200K
 	Cannone Maledettone		115M
 Goat	Skibidi Toilet		350M
 
-// 🔥 読み込み
+
 function loadData(){
   const text = document.getElementById("dataInput").value;
   const lines = text.split("\n");
@@ -333,7 +333,7 @@ function loadData(){
   render();
 }
 
-// 🔥 セレクト生成
+
 function render(){
   const select = document.getElementById("characterSelect");
   select.innerHTML = '<option value="">キャラ選択</option>';
@@ -346,7 +346,7 @@ function render(){
   });
 }
 
-// 🔥 選択時（自動入力）
+
 function setCharacter(){
   let name = document.getElementById("characterSelect").value;
 
@@ -357,7 +357,7 @@ function setCharacter(){
   document.getElementById("rarity").value = rarityMap[c.rarity];
 }
 
-// 🔥 レア生成
+
 const raritySelect = document.getElementById("rarity");
 Object.entries(rarityMap).forEach(([k,v])=>{
   let op = document.createElement("option");
@@ -366,7 +366,7 @@ Object.entries(rarityMap).forEach(([k,v])=>{
   raritySelect.appendChild(op);
 });
 
-// 🔥 表示
+
 function format(v){
   if(v>=1e9) return (Math.floor(v/1e8)/10)+"B/s";
   if(v>=1e6) return (Math.floor(v/1e5)/10)+"M/s";
@@ -374,7 +374,7 @@ function format(v){
   return v.toFixed(1)+"/s";
 }
 
-// 🔥 計算
+
 function calculate(){
   let base = parseFloat(baseValue.value);
   let r = parseFloat(rarity.value);
