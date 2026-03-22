@@ -1,41 +1,289 @@
-function loadData() {
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>火力計算機 修正版 (+1属性)</title>
+<style>
+body { font-family: Arial; background: #111; color: white; text-align: center; margin-top: 40px; }
+select, button { padding: 10px; margin: 10px; font-size: 16px; }
+.result { font-size: 28px; color: cyan; }
+.mutations { display: inline-block; text-align: left; }
+.mutations label { display: block; }
+</style>
+</head>
+<body>
+<h1>火力計算機 修正版 (+1属性)</h1>
+
+<select id="raritySelect" onchange="filterCharacters()">
+  <option value="all">全て</option>
+  <option value="Common">Common</option>
+  <option value="Rare">Rare</option>
+  <option value="Epic">Epic</option>
+  <option value="Legendary">Legendary</option>
+  <option value="Mythic">Mythic</option>
+  <option value="Brainrot God">Brainrot God</option>
+  <option value="Secret">Secret</option>
+  <option value="Goat">Goat</option>
+</select>
+
+<br>
+<select id="characterSelect" onchange="setCharacter()">
+  <option value="">キャラ選択</option>
+</select>
+
+<h3>属性</h3>
+<select id="attributeSelect">
+  <option value="1">Default</option>
+  <option value="1.25">Gold</option>
+  <option value="1.5">Diamond</option>
+  <option value="3">Galaxy</option>
+  <option value="5">Zombie</option>
+  <option value="6">Dreamy</option>
+  <option value="7">Ice & Fire</option>
+  <option value="8">Carnival</option>
+  <option value="9">Aqua</option>
+  <option value="9.5">Neon</option>
+  <option value="10">Rainbow</option>
+  <option value="10.5">Chocolate</option>
+  <option value="10.5">Lovely</option>
+  <option value="11">Darkness</option>
+  <option value="11">Toxic</option>
+  <option value="12">Christmas</option>
+  <option value="12.5">Heaven</option>
+  <option value="13">Void</option>
+</select>
+
+<div class="mutations">
+  <label><input type="checkbox" value="1.15">雷</label>
+  <label><input type="checkbox" value="1.2">氷</label>
+  <label><input type="checkbox" value="1.25">ニューイヤー</label>
+  <label><input type="checkbox" value="1.1">グリッチ</label>
+  <label><input type="checkbox" value="1.15">ウェーブ</label>
+  <label><input type="checkbox" value="1.2">キューピット</label>
+  <label><input type="checkbox" value="1.3">パンプキン</label>
+  <label><input type="checkbox" value="1.4">スキビティ</label>
+</div>
+
+<br>
+<button onclick="calculate()">計算</button>
+
+<div class="result" id="result"></div>
+
+<script>
+// ★キャラデータ（全員フル）
+const data = `Common	Fishini Bossini	1
+	Lirili Larilla	3
+	Tim Cheese	5
+	Fluriflura	7
+	Penguino Cocosino	9
+	Svinina Bombardino	10
+	Pipi Kiwi	13
+	Pipi Avocado	14
+Rare	Trippi Troppi	15
+	Tung Tung Tung Sahur	25
+	Gangster Footera	30
+	Boneca Ambalabu	40
+	Pipi Corni	50
+	Ta Ta Ta Ta Sahur	55
+	Burballoni Watermeloni	60
+	Pipi Potato	70
+Epic	Cappuccino Assassino	75
+	Brr Brr Patapim	100
+	Trulimero Trulicina	120
+	Bananita Dolphinita	150
+	Los Lirilitos	200
+	Salamino Pinguino	250
+	Tric Trac Baraboom	275
+	Los Tung TungCitos	300
+	Tukanno Bananno	325
+	Blueberrinni Octopussini	350
+	Spijuniro Golubiro	400
+	Penguini Zucchini	425
+	Blueberrini Tatticini	450
+	Gingobalo Gingobali	500
+Legendary	Burbalona Loliloli	200
+	Chimpanzini Bananini	300
+	Ballerina Cappuccina	500
+	Chef Crabracadabra	600
+	Glorbo Fruttodillo	750
+	Cacto Hipopotamo	900
+	Ballerino Lololo	1000
+	Lerulerulerule	1200
+	Bambini Crostini	1500
+	Francescoo	1700
+	Zibra Zubra Zibralini	2000
+	Bambu di Miale	2200
+	Mangolini Parrocini	2500
+	Lampu Lampu Sahur	2600
+	Octopuss Coconuss	2700
+	Leonelli Cactuselli	3000
+	Elefantucci Bananucci	3500
+	Avocadini Antilopini	4000
+	Dragonini Ananasini	5000
+Mythic	Frigo Camelo	1200
+	Orangutini Ananassini	1700
+	Bombardiro Crocodilo	2500
+	Bombombini Gusini	5000
+	Gorillo Watermellondrillo	6250
+	Sigma Boy	7000
+	Matteo	7500
+	Los Spijuniritos	8000
+	Rhino Toasterino	8500
+	Ganganzelli Trulala	9000
+	Te Te Te Sahur	9500
+	Fireworkito Explodito	10000
+	Strawberrelli Flamingelli	11000
+	Elefantino Frigorifero	12000
+	To To To Sahur	13000
+	Elefante Cafettino	13500
+	Antoniooo	14000
+	Kudanile Astronaute	14500
+	Girafa Celeste	15000
+	Mr Peppermint	15500
+	Perochello Lemonchello	16000
+	Tang Tang Kelentang	17000
+	Avocadorilla	18000
+	Patapimus Maximus	19000
+	Tirilikalika Tirilikaliko	20000
+	Santoniooo	21000
+	Los Matteos	22500
+	Los Sigma Boys	23000
+	Ti Ti Ti Sahur	25000
+	Fishinis Santinis	27000
+Brainrot God	Cocofanto Elefanto	10000
+	Tob Tobi Tob	25000
+	Tralalero Tralala	50000
+	Odin Din Din Dun	75000
+	Akulini Cactusini	80000
+	Chachechicha	80000
+	Espressona Signora	90000
+	La Vaca Saturno Saturnita	100000
+	Centralucci Nuclearucci	105000
+	Ecco Cavallo Virtuoso	110000
+	Los Vaquitas Saturnitas	115000
+	Bulbito Bandito Traktorito	120000
+	Bananananito Bandito	125000
+	Chillin Chili	130000
+	Trippi Troppi Troppa Trippa	130000
+	Brri Bicus Dicus	135000
+	Cioccolatini Pancioncioni	140000
+	Brr Es Teh Patipum	145000
+	Torrtuginni Dragonfrutinni	150000
+	Los Bros	155000
+	Bim Bim Bim Sadim	157000
+	Bambini Tankini	160000
+	Jiqi Jiqi Shizhon	165000
+	Hotti Coccolli	167000
+	Los Crocodillitos	170000
+	Agarrini La Palini	175000
+	Alessiooooooo	180000
+	Dig Torto Dolf	185000
+	Karkerkar Kurkur	190000
+	Il Costruttore Di Pomodori	195000
+	Piccionetta Machina	200000
+	Pipoqueira Motoqueira	205000
+	Il Piccione Musculone	210000
+	Nooo My Present	215000
+	Job Job Job Sahur	220000
+	Las Sis	230000
+	La Matcha Assassino	235000
+	Il Mastodontico Telepiedone	240000
+	Los Christmas bros	245000
+	Malame Amarale	250000
+	Il Bisonte Giuppitere	255000
+	Linguicine Serpentine	260000
+	Belugelo Beluga	270000
+	Bella PanCasita	275000
+	Missilpython Turbozzo	300000
+	Auglurini Arbuzini	350000
+Goat	Skibidi Toilet	350000000`;
+
+let characters = [];
+let selectedBase = 0;
+
+// K/M/B対応
+function parseValue(v){
+  v = v.toUpperCase();
+  if(v.endsWith("K")) return parseFloat(v)*1000;
+  if(v.endsWith("M")) return parseFloat(v)*1000000;
+  if(v.endsWith("B")) return parseFloat(v)*1000000000;
+  return parseFloat(v);
+}
+
+// データ読み込み
+function loadData(){
   characters = [];
-  const rarityList = ["Brainrot God","Secret","Goat","Mythic","Legendary","Epic","Rare","Common"];
-  const tokens = data.trim().split(/\s+/);
-  let currentRarity = "Common";
-  let i = 0;
-
-  while (i < tokens.length) {
-    // レアリティ判定（長い順）
-    let matched = false;
-    for (const r of rarityList) {
-      const rTokens = r.split(" ");
-      if (tokens.slice(i, i + rTokens.length).join(" ") === r) {
-        currentRarity = r;
-        i += rTokens.length;
-        matched = true;
-        break;
+  const lines = data.trim().split("\n");
+  let currentRarity = "";
+  lines.forEach(line=>{
+    if(!line.trim()) return;
+    const parts = line.trim().split(/\t+/);
+    if(parts.length < 2) return;
+    if(["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0])){
+      currentRarity = parts[0];
+      if(parts.length>=3){
+        const name=parts[1].trim();
+        const value=parseValue(parts[2].trim());
+        characters.push({name, base:value, rarity:currentRarity});
       }
+    } else {
+      const name=parts[0].trim();
+      const value=parseValue(parts[1].trim());
+      characters.push({name, base:value, rarity:currentRarity});
     }
-    if (matched) continue;
-
-    // 名前と値を分離（値は最後の数字/K/M）
-    let j = i;
-    while (j < tokens.length && !tokens[j].match(/^\d+(\.\d+)?(K|M)?$/)) {
-      j++;
-    }
-    if (j >= tokens.length) break;
-
-    // 名前 = i から j-1 まで
-    let name = tokens.slice(i, j).join(" ");
-
-    // 値 = tokens[j]
-    let value = parseValue(tokens[j]);
-
-    characters.push({ name, base: value, rarity: currentRarity });
-
-    i = j + 1; // 次のキャラへ
-  }
-
+  });
   filterCharacters();
 }
+
+// キャラフィルター
+function filterCharacters(){
+  const rarity=document.getElementById("raritySelect").value;
+  const select=document.getElementById("characterSelect");
+  select.innerHTML='<option value="">キャラ選択</option>';
+  characters.forEach(c=>{
+    if(rarity==="all" || c.rarity===rarity){
+      const op=document.createElement("option");
+      op.value=c.name;
+      op.textContent=c.name;
+      select.appendChild(op);
+    }
+  });
+}
+
+// 選択キャラ設定
+function setCharacter(){
+  const name=document.getElementById("characterSelect").value;
+  const c=characters.find(x=>x.name===name);
+  if(!c) return;
+  selectedBase=c.base;
+}
+
+// 結果表示（B/M/K対応）
+function format(v){
+  if(v>=1e9) return Math.floor(v/1e9*10)/10 + "B";
+  if(v>=1e6) return Math.floor(v/1e6*10)/10 + "M";
+  if(v>=1e3) return Math.floor(v/1e3*10)/10 + "K";
+  return Math.floor(v*10)/10;
+}
+
+// 計算
+function calculate(){
+  let mutationSum = 0;
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
+    mutationSum += parseFloat(x.value);
+  });
+  
+  const attr = parseFloat(document.getElementById("attributeSelect").value);
+  
+  // ★属性に+1して計算
+  const totalMultiplier = (attr + 1) + mutationSum;
+  
+  const result = selectedBase * totalMultiplier;
+  
+  document.getElementById("result").textContent = "最終値: " + format(result);
+}
+
+loadData();
+</script>
+</body>
+</html>
