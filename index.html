@@ -363,13 +363,23 @@ function format(v){
 }
 
 // 計算
+// 計算
 function calculate(){
-  let m=0;
-  document.querySelectorAll("input[type=checkbox]:checked").forEach(x=> m += parseFloat(x.value));
-  const attr=parseFloat(document.getElementById("attributeSelect").value);
-  const result= selectedBase*(attr + m);
-  document.getElementById("result").textContent="最終値: "+format(result);
+  let mutationSum = 0;
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
+    mutationSum += parseFloat(x.value);
+  });
+  
+  const attr = parseFloat(document.getElementById("attributeSelect").value);
+  
+  // 属性+1、変異倍率足し算
+  const totalMultiplier = (attr + 1) + mutationSum;
+  
+  const result = selectedBase * totalMultiplier;
+  
+  document.getElementById("result").textContent = "最終値: " + format(result);
 }
+
 
 loadData();
 </script>
