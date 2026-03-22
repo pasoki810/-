@@ -215,32 +215,28 @@ function loadData(){
   characters = [];
   const lines = data.trim().split("\n");
   let currentRarity = "";
+  const rarityNames = ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"];
+
   lines.forEach(line => {
- line = line.replace(/\s+/g, '\t').trim();
-const parts = line.split('\t');
+    line = line.trim();
+    if(!line) return;
 
-// 修正版
-line = line.trim();
-const parts = line.split(/\t+/);
-  if(!line) return;
-  const parts = line.split('\t');
-  if(parts.length < 2) return;
+    const parts = line.split(/\t+/);  // ←これ1回だけ
+    if(parts.length < 2) return;
 
-  let rarityNames = ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"];
-
- if(rarityNames.includes(parts[0].trim())) {
-    currentRarity = parts[0].trim();
-    if(parts.length >= 2){               // ★3→2に変更
+    if(rarityNames.includes(parts[0].trim())) {
+      currentRarity = parts[0].trim();
+      if(parts.length >= 3){
         const name = parts[1].trim();
-        const value = parseValue(parts[2]?.trim() || "0"); // ★値がなければ0に
+        const value = parseValue(parts[2]?.trim() || "0");
         characters.push({name, base:value, rarity:currentRarity});
+      }
+    } else {
+      const name = parts[0].trim();
+      const value = parseValue(parts[1]?.trim() || "0");
+      characters.push({name, base:value, rarity:currentRarity});
     }
-}else {
-    const name = parts[0].trim();
-    const value = parseValue(parts[1].trim());
-    characters.push({name, base:value, rarity:currentRarity});
-  }
-});
+  });
 
   filterCharacters();
 }
