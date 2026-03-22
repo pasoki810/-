@@ -12,58 +12,42 @@ select, button { padding: 10px; margin: 10px; font-size: 16px; }
 </style>
 </head>
 <body>
-<h1>火力計算機</h1>
+<div id="controls">
+  <h3>属性</h3>
+  <select id="attributeSelect">
+    <option value="1">Default</option>
+    <option value="1.25">Gold</option>
+    <option value="1.5">Diamond</option>
+    <option value="3">Galaxy</option>
+    <option value="5">Zombie</option>
+    <option value="6">Dreamy</option>
+    <option value="7">Ice & Fire</option>
+    <option value="8">Carnival</option>
+    <option value="9">Aqua</option>
+    <option value="9.5">Neon</option>
+    <option value="10">Rainbow</option>
+    <option value="10.5">Chocolate</option>
+    <option value="10.5">Lovely</option>
+    <option value="11">Darkness</option>
+    <option value="11">Toxic</option>
+    <option value="12">Christmas</option>
+    <option value="12.5">Heaven</option>
+    <option value="13">Void</option>
+  </select>
 
-<select id="raritySelect" onchange="filterCharacters()">
-  <option value="all">全て</option>
-  <option value="Common">Common</option>
-  <option value="Rare">Rare</option>
-  <option value="Epic">Epic</option>
-  <option value="Legendary">Legendary</option>
-  <option value="Mythic">Mythic</option>
-  <option value="Brainrot God">Brainrot God</option>
-  <option value="Secret">Secret</option>
-  <option value="Goat">Goat</option>
-</select>
-
-<br>
-<select id="characterSelect" onchange="setCharacter()">
-  <option value="">キャラ選択</option>
-</select>
-
-<h3>属性</h3>
-<select id="attributeSelect">
-  <option value="1">Default</option>
-  <option value="1.25">Gold</option>
-  <option value="1.5">Diamond</option>
-  <option value="3">Galaxy</option>
-  <option value="5">Zombie</option>
-  <option value="6">Dreamy</option>
-  <option value="7">Ice & Fire</option>
-  <option value="8">Carnival</option>
-  <option value="9">Aqua</option>
-  <option value="9.5">Neon</option>
-  <option value="10">Rainbow</option>
-  <option value="10.5">Chocolate</option>
-  <option value="10.5">Lovely</option>
-  <option value="11">Darkness</option>
-  <option value="11">Toxic</option>
-  <option value="12">Christmas</option>
-  <option value="12.5">Heaven</option>
-  <option value="13">Void</option>
-　</select>
+  <h3>変異</h3>
+  <div class="mutations">
+    <label><input type="checkbox" value="1.5">Lightning</label>
+    <label><input type="checkbox" value="2">Frozen</label>
+    <label><input type="checkbox" value="2">Fireworks</label>
+    <label><input type="checkbox" value="2.5">Cupid</label>
+    <label><input type="checkbox" value="3">Wave</label>
+    <label><input type="checkbox" value="3">Glitch</label>
+    <label><input type="checkbox" value="4">Pumpkin</label>
+    <label><input type="checkbox" value="5">Skibidi</label>
+  </div>
 </div>
 
-<div class="mutations">
-  <label><input type="checkbox" value="1.5">Lightning</label>
-  <label><input type="checkbox" value="2">Frozen</label>
-  <label><input type="checkbox" value="2">Fireworks</label>
-  <label><input type="checkbox" value="2.5">Cupid</label>
-  <label><input type="checkbox" value="3">Wave</label>
-  <label><input type="checkbox" value="3">Glitch</label>
-  <label><input type="checkbox" value="4">Pumpkin</label>
-  <label><input type="checkbox" value="5">Skibidi</label>
-</div>
 
 <br>
 <button onclick="calculate()">計算</button>
