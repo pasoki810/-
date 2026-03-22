@@ -393,8 +393,9 @@ function format(v){
 
 // 計算
 function calculate(){
-  let m = 0;
+let m = 0;
 document.querySelectorAll("input[type=checkbox]:checked").forEach(x => m += parseFloat(x.value));
+let result = selectedBase * (1 + m) * attr;
 let attr = parseFloat(document.getElementById("attributeSelect").value);
 let result = selectedBase * (1 + m) * attr;
   document.getElementById("result").textContent = "最終値: " + format(result);
