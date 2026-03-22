@@ -394,20 +394,29 @@ function format(v){
 // 計算
 // 計算
 function calculate(){
-  let base = selectedBase; // 元値
-  let attr = parseFloat(document.getElementById("attributeSelect").value); // 属性倍率
-  let afterAttr = base * attr; // 属性かける
-
-  // 変異合計
-  let mutationSum = 0;
-  document.querySelectorAll(".mutations input[type=checkbox]:checked").forEach(x=>{
-    mutationSum += parseFloat(x.value);
+  let m = 0;
+  // 変異倍率足し算
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
+    m += parseFloat(x.value);
   });
 
-  // 最終値
-  let result = afterAttr * (1 + mutationSum);
-  document.getElementById("result").textContent = "最終値: " + format(result);
+  let attr = parseFloat(document.getElementById("attributeSelect").value);
+  
+  // 元値 × 属性 × (1 + 変異合計)
+  let result = selectedBase * attr * (1 + m);
+
+  // 四捨五入して表示
+  document.getElementById("result").textContent = "最終値: " + formatRounded(result);
 }
+
+// 四捨五入してK/M/B表示
+function formatRounded(v){
+  if(v >= 1e9) return Math.round(v/1e9) + "B/s";
+  if(v >= 1e6) return Math.round(v/1e6) + "M/s";
+  if(v >= 1e3) return Math.round(v/1e3) + "K/s";
+  return Math.round(v) + "/s";
+}
+
 
 
 loadData();
