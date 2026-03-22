@@ -215,23 +215,28 @@ function loadData(){
   characters = [];
   const lines = data.trim().split("\n");
   let currentRarity = "";
-  lines.forEach(line=>{
-    if(!line.trim()) return;
-    const parts = line.trim().split(/\t+/);
-    if(parts.length < 2) return;
-    if(["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"].includes(parts[0])){
-      currentRarity = parts[0];
-      if(parts.length>=3){
-        const name=parts[1].trim();
-        const value=parseValue(parts[2].trim());
-        characters.push({name, base:value, rarity:currentRarity});
-      }
-    } else {
-      const name=parts[0].trim();
-      const value=parseValue(parts[1].trim());
+  lines.forEach(line => {
+  line = line.replace(/\s+/g, '\t').trim(); // 空白をタブに統一
+  if(!line) return;
+  const parts = line.split('\t');
+  if(parts.length < 2) return;
+
+  let rarityNames = ["Common","Rare","Epic","Legendary","Mythic","Brainrot God","Secret","Goat"];
+
+  if(rarityNames.includes(parts[0].trim())) {
+    currentRarity = parts[0].trim();
+    if(parts.length >= 3){
+      const name = parts[1].trim();
+      const value = parseValue(parts[2].trim());
       characters.push({name, base:value, rarity:currentRarity});
     }
-  });
+  } else {
+    const name = parts[0].trim();
+    const value = parseValue(parts[1].trim());
+    characters.push({name, base:value, rarity:currentRarity});
+  }
+});
+
   filterCharacters();
 }
 
