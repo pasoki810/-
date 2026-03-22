@@ -216,7 +216,12 @@ function loadData(){
   const lines = data.trim().split("\n");
   let currentRarity = "";
   lines.forEach(line => {
-  line = line.replace(/\s+/g, '\t').trim(); // 空白をタブに統一
+ line = line.replace(/\s+/g, '\t').trim();
+const parts = line.split('\t');
+
+// 修正版
+line = line.trim();
+const parts = line.split(/\t+/);
   if(!line) return;
   const parts = line.split('\t');
   if(parts.length < 2) return;
