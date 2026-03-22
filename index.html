@@ -377,9 +377,22 @@ function calculate(){
   const attr = parseFloat(document.getElementById("attributeSelect").value);
   
   // ★属性に+1して計算
-  const totalMultiplier = (attr + 1) + mutationSum;
+function calculate(){
+  let mutationSum = 0;
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
+    mutationSum += parseFloat(x.value);
+  });
+  
+  const attr = parseFloat(document.getElementById("attributeSelect").value);
+  
+  // あなたの計算方法：(デフォルト + 変異全部) × 元値
+  const totalMultiplier = attr + mutationSum; // デフォルト値をattrにして、+変異合計
   
   const result = selectedBase * totalMultiplier;
+  
+  document.getElementById("result").textContent = "最終値: " + format(result);
+}
+
   
   document.getElementById("result").textContent = "最終値: " + format(result);
 }
