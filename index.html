@@ -369,15 +369,11 @@ function format(v){
 
 // 計算
 function calculate(){
-  let mutationSum = 0;
-  document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
-    mutationSum += parseFloat(x.value);
-  });
-  
-  const attr = parseFloat(document.getElementById("attributeSelect").value);
-  
-  // ★属性に+1して計算
-function calculate(){
+  if(selectedBase === 0){
+    document.getElementById("result").textContent = "キャラを選んでください";
+    return;
+  }
+
   let mutationSum = 0;
   document.querySelectorAll("input[type=checkbox]:checked").forEach(x => {
     mutationSum += parseFloat(x.value);
@@ -386,16 +382,13 @@ function calculate(){
   const attr = parseFloat(document.getElementById("attributeSelect").value);
   
   // あなたの計算方法：(デフォルト + 変異全部) × 元値
-  const totalMultiplier = attr + mutationSum; // デフォルト値をattrにして、+変異合計
+  const totalMultiplier = attr + mutationSum;
   
-  const result = selectedBase * totalMultiplier;
+  const result = parseFloat(selectedBase) * totalMultiplier;
   
   document.getElementById("result").textContent = "最終値: " + format(result);
 }
 
-  
-  document.getElementById("result").textContent = "最終値: " + format(result);
-}
 
 loadData();
 </script>
