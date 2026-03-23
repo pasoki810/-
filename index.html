@@ -1,94 +1,28 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>火力計算機</title>
+<div id="app">
 
-<!-- 👇ここに書く -->
-<style>
-<style>
-	body {
-  font-family: Arial;
-  background: #111;
-  color: white;
-  text-align: center;   /* ←中央寄せ */
-  margin-top: 40px;
-}
+  <h1>火力計算機</h1>
 
-#controls {
-  display: inline-block;
-  text-align: left;
-  margin-top: 20px;
-  padding: 20px;        /* ←余白つける */
-  background: #222;     /* ←ちょい見やすく */
-  border-radius: 10px;  /* ←角丸 */
-}
+  <select id="raritySelect" onchange="filterCharacters()">
+    <option value="all">全て</option>
+    <option value="Common">Common</option>
+    <option value="Rare">Rare</option>
+    <option value="Epic">Epic</option>
+    <option value="Legendary">Legendary</option>
+    <option value="Mythic">Mythic</option>
+    <option value="Brainrot God">Brainrot God</option>
+    <option value="Secret">Secret</option>
+    <option value="Goat">Goat</option>
+  </select>
 
-/* サイズアップ */
-select, button {
-  padding: 12px;
-  margin: 10px;
-  font-size: 18px;
-}
+  <select id="characterSelect" onchange="setCharacter()">
+    <option value="">キャラ選択</option>
+  </select>
 
-.mutations label {
-  display: block;
-  font-size: 18px;   /* ←文字大きく */
-  margin: 5px 0;
-}
-
-h1 {
-  font-size: 36px;
-}
-
-h3 {
-  font-size: 22px;
-}
-
-#controls {
-  display: inline-block;
-  text-align: left;
-  margin-top: 20px;
-}
-
-#attributeSelect {
-  display: block;
-  margin-bottom: 15px;
-}
-
-.mutations label {
-  display: block;
-}
-</style>
-
-</style>
-
-</head>
-<body><select id="raritySelect" onchange="filterCharacters()">
-  <option value="all">全て</option>
-  <option value="Common">Common</option>
-  <option value="Rare">Rare</option>
-  <option value="Epic">Epic</option>
-  <option value="Legendary">Legendary</option>
-  <option value="Mythic">Mythic</option>
-  <option value="Brainrot God">Brainrot God</option>
-  <option value="Secret">Secret</option>
-  <option value="Goat">Goat</option>
-</select>
-
-<br>
-
-<select id="characterSelect" onchange="setCharacter()">
-  <option value="">キャラ選択</option>
-</select>
-
-<!-- ここから整理 -->
-<div id="controls">
-
-  <h3>属性</h3>
-  <select id="attributeSelect">
-    <option value="1">Default</option>
-    <option value="1.25">Gold</option>
+  <div id="controls">
+    <h3>属性</h3>
+    <select id="attributeSelect">
+      <option value="1">Default</option>
+      <option value="1.25">Gold</option>
     <option value="1.5">Diamond</option>
     <option value="3">Galaxy</option>
     <option value="5">Zombie</option>
@@ -105,11 +39,11 @@ h3 {
     <option value="12">Christmas</option>
     <option value="12.5">Heaven</option>
     <option value="13">Void</option>
-  </select>
+    </select>
 
-  <h3>変異</h3>
-  <div class="mutations">
-    <label><input type="checkbox" value="1.5">Lightning</label>
+    <h3>変異</h3>
+    <div class="mutations">
+      <label><input type="checkbox" value="1.5">Lightning</label>
     <label><input type="checkbox" value="2">Frozen</label>
     <label><input type="checkbox" value="2">Fireworks</label>
     <label><input type="checkbox" value="2.5">Cupid</label>
@@ -117,15 +51,14 @@ h3 {
     <label><input type="checkbox" value="3">Glitch</label>
     <label><input type="checkbox" value="4">Pumpkin</label>
     <label><input type="checkbox" value="5">Skibidi</label>
+    </div>
   </div>
 
+  <button onclick="calculate()">計算</button>
+
+  <div class="result" id="result"></div>
+
 </div>
-
-
-<br>
-<button onclick="calculate()">計算</button>
-
-<div class="result" id="result"></div>
 
 <script>
 // ★キャラデータ（全員フル）
