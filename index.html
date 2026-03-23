@@ -1,18 +1,26 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>火力計算機</title>
-<style>
-body { font-family: Arial; background: #111; color: white; text-align: center; margin-top: 40px; }
-select, button { padding: 10px; margin: 10px; font-size: 16px; }
-.result { font-size: 28px; color: cyan; }
-.mutations { display: inline-block; text-align: left; }
-.mutations label { display: block; }
-</style>
-</head>
-<body>
+<h1>火力計算機</h1>
+
+<select id="raritySelect" onchange="filterCharacters()">
+  <option value="all">全て</option>
+  <option value="Common">Common</option>
+  <option value="Rare">Rare</option>
+  <option value="Epic">Epic</option>
+  <option value="Legendary">Legendary</option>
+  <option value="Mythic">Mythic</option>
+  <option value="Brainrot God">Brainrot God</option>
+  <option value="Secret">Secret</option>
+  <option value="Goat">Goat</option>
+</select>
+
+<br>
+
+<select id="characterSelect" onchange="setCharacter()">
+  <option value="">キャラ選択</option>
+</select>
+
+<!-- ここから整理 -->
 <div id="controls">
+
   <h3>属性</h3>
   <select id="attributeSelect">
     <option value="1">Default</option>
@@ -46,6 +54,7 @@ select, button { padding: 10px; margin: 10px; font-size: 16px; }
     <label><input type="checkbox" value="4">Pumpkin</label>
     <label><input type="checkbox" value="5">Skibidi</label>
   </div>
+
 </div>
 
 
