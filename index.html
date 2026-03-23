@@ -1,7 +1,54 @@
-<div id="app">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>火力計算機</title>
 
-  <h1>火力計算機</h1>
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
 
+#app {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #1e1e1e;
+  border-radius: 15px;
+}
+
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+.mutations {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.mutations label {
+  display: block;
+  margin: 5px 0;
+}
+
+.result {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>
+
+</head>
+<body>
   <select id="raritySelect" onchange="filterCharacters()">
     <option value="all">全て</option>
     <option value="Common">Common</option>
